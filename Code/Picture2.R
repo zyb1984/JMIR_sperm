@@ -31,11 +31,11 @@ p4 <- image_ggplot(p4_image, interpolate = FALSE)
 library("cowplot")
 library(showtext)
 picture02 <- ggdraw() +     
-      draw_plot(p1, 0, 0.5, 1, 0.5) + # 在母图上半部，占母图比例1/2  
-      draw_plot(p2, 0, 0, 0.5, 0.5) + # 在母图左下角，占母图比例1/4  
-      draw_plot(p3, 0.5, 0.25, 0.5, 0.25) + # 在母图右下角，占母图比例1/8
-      draw_plot(p4, 0.5, 0, 0.5, 0.25) + # 在母图右下角，占母图比例1/8
-       draw_plot_label(c("A", "B", "C","D"),c(0, 0, 0.5,0.5), c(1, 0.5, 0.5,0.25)) # 加上标签
+      draw_plot(p1, 0, 0.5, 1, 0.5) + 
+      draw_plot(p2, 0, 0, 0.5, 0.5) + 
+      draw_plot(p3, 0.5, 0.25, 0.5, 0.25) + 
+      draw_plot(p4, 0.5, 0, 0.5, 0.25) +
+       draw_plot_label(c("A", "B", "C","D"),c(0, 0, 0.5,0.5), c(1, 0.5, 0.5,0.25)) 
 pdf('Picture2.pdf',width = 6,height = 6)
 picture02
 dev.off()
