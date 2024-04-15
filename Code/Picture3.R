@@ -9,34 +9,12 @@ results_review <- biblioAnalysis(M_review)
 indices_article <- Hindex(M_article, field = "author", sep = ";")
 authors_H <- indices_article$H 
 authors_top <- head(authors_H[order(authors_H$h_index,decreasing = T),], n=10)
- ##              Element h_index g_index PY_start   TC  NP   m_index
-27836       SCHLEGEL PN      54      96     1993 9401 105 1.6875000
-22574       NIESCHLAG E      50      85     1978 7478 110 1.0638298
-31437        TOURNAYE H      46      75     1991 8008  75 1.3529412
-9951          FORESTA C      41      68     1992 4836  84 1.2424242
-7664          DEVROEY P      38      50     1986 9937  50 0.9743590
-18409      LIPSHULTZ LI      37      65     1979 4670  65 0.8043478
-9620           FERLIN A      34      57     1995 3599  57 1.1333333
-32212 VAN STEIRTEGHEM A      34      47     1994 4531  47 1.0967742
-10630         GAROLLA A      32      50     1996 3196  50 1.1034483
-33013            WANG X      32      53     2003 3664 148 1.4545455
-
 
 ## Rank review_authors based on the H-index
 indices_review <- Hindex(M_review, field = "author", sep = ";")
 review_H <- indices_review$H 
 authors_review_top <- head(review_H[order(review_H$h_index,decreasing = T),], n=10)
-         Element h_index g_index PY_start   TC NP   m_index
-44       AGARWAL A      27      39     2004 3326 39 1.2857143
-1351    ESTEVES SC      21      25     2011 1645 25 1.5000000
-2556      KRAUSZ C      21      24     1999 3774 24 0.8076923
-4208   SCHLEGEL PN      21      30     1997 1252 30 0.7500000
-1420      FERLIN A      13      14     2000 1613 14 0.5200000
-1476     FORESTA C      13      15     2000 1605 15 0.5200000
-4742    TOURNAYE H      13      20     1994 1263 20 0.4193548
-656    CALOGERO AE      12      18     2000  598 18 0.4800000
-3907    RAMASAMY R      12      18     2012  468 18 0.9230769
-916  CONDORELLI RA      11      14     2013  708 14 0.9166667
+
 ## Top article_author Productivity over Time
 
 M <- M_article
