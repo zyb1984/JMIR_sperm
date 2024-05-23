@@ -11,27 +11,25 @@ head(articles)
 ## 最佳分割点
 breaks_Article <- classIntervals(articles$Article, n =5,style = "kmeans")$brks
 breaks_Article
-##[1]0.0   57.0  203.5  529.0 1356.5 2249.0
+##[1] 0.0   57.0  200.0  516.5 1344.0 2196.0
 breaks_Review <- classIntervals(articles$Review, n =5,style = "kmeans")$brks
 breaks_Review
-##[1]  0.0   9.0  36.5 116.0 465.5 740.0
+##[1] 0.0   10.5  47.0  115.0  462.0  732.0
 breaks_All <- classIntervals(articles$All, n =5,style = "kmeans")$brks
 breaks_All
-## [1]    0.0   81.5  254.0  574.0 1518.0 2989.0
+## [1]    0.0   68.0  252.5  655.0 1505.0 2928.0
 World <- merge(World,articles,by="iso_a3")
 p_country<- tm_shape(World) +
-		   tm_polygons(fill = "All",alpha = 0.7, 
-	              fill.scale =  tm_scale_intervals(values = "scico.roma")) +
+	    tm_polygons("All",palette = "Blues", alpha = 0.5, n=8) +
 	      tm_text("name", size = "AREA") +
-		  tm_bubbles(size="Review", col = "Article", 
-	 	       border.col = "black", border.alpha = .5, style="fixed", breaks=c(0,seq(0, 2500, by=500), 2500),
-		 	   palette="brewer.rd_bu", contrast=1) 
+		  tm_bubbles(size="Review", col = "Article", style="fixed", breaks=c(0,seq(0, 2500, by=400), 2500),
+		 	  palette=  "Reds",contrast= 1) 
 
 library("ggplot2")
 articles_country <- read.csv("./Data/Ratio_country.csv", header=T)
 Ratio_rank <- ggplot(articles_country,aes(x = reorder(Country, Ratio),  Ratio)) +  
    geom_col() +
-   geom_hline(aes(yintercept=0.1527), colour="red", linetype="dashed")+
+   geom_hline(aes(yintercept=mean(Ratio)), colour="red", linetype="dashed")+
    coord_flip() + 
    theme(legend.position = "none")+
      theme(axis.text.x=element_text(angle=90, hjust=1))+
