@@ -9,13 +9,13 @@ library(wordcloud)        # To generate wordclouds
 library(gsl)              # Required for the topicmodels package
 library(topicmodels)      # For topicmodels
 library(caret)            # For machine learning
-file <- c("./sperm/scopus_article.bib")
+file <- c("./Data/scopus_article.bib")
 M <- convert2df(file, dbsource = "scopus", format = "bibtex") 
 M_sub <- M[,c(6,11,17,21,25)]
-##[1] 12756     5
+## [1] 12521     5
 M_sub <- M_sub[!is.na(M_sub[,1]),]                   
 M_sub <- M_sub[complete.cases(M_sub[,1]),]
-## [1] 12067     5
+## [1] 11920     5
 M_sub <- data.frame(M_sub)
 M_sub$doc_id <- paste0("text",1:nrow(M_sub),sep="")
 library("quanteda")
@@ -48,6 +48,13 @@ myStopwords <- c(stopwords("english"),
  "amp", "now", "one","two","h", "p", "ci","per","der","und","r","kg","ii","get", "much", "many", "every", "lot", "even", "also")
 
 token_DEstop <- tokens_select(token, myStopwords, selection = "remove", case_insensitive = TRUE)
+
+
+
+
+
+
+
 
 ## we then create the document-feature matrix. 
 ## We lower and stem the words (tolower and stem) and remove common stop words (remove=stopwords()). 
