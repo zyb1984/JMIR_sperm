@@ -57,7 +57,6 @@ library(RCy3)
 library(igraph)
 createNetworkFromIgraph(igraph_article,"igraph_article")
 
-
 file_review <- c("./Data/Scopus_review.bib")
 M_review <- convert2df(file_review, dbsource = "scopus", format = "bibtex") 
 ## 1.3 国家及主要发文机构
@@ -75,58 +74,6 @@ library(igraph)
 createNetworkFromIgraph(igraph_review,"igraph_review")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
-
-library(readxl)
-library(albersusa)
-library(biscale)
-library(sf)
-library(tidyverse)
-library(hrbrthemes)
-library(ggtext)
-library(scatterpie)
-library("ggsci")
-articles <- read.csv(file.choose(),header=T)
-rownames(articles) <- articles[,2]
-articles <- articles[,-c(1,2)]
-
-articles<- st_as_sf(articles, coords = c(x ="lon", y = "lat")) %>% as.data.frame(stringsAsFactors = F)
-
-
-
-
-%>% st_transform(crs = 2343)%>% dplyr::mutate(lon = sf::st_coordinates(.)[,1],
-                                lat = sf::st_coordinates(.)[,2])%>% select(Article,Review,All,lon,lat) %>% data.frame(stringsAsFactors = F) 
-p4 <- ggplot() +
-    geom_sf(data = World,fill="gray90",size=.125,color="black")+
-    #geom_sf(data = World,aes(fill = "All"))+
-    # scale_fill_gradient(low = "white",  high = "red",n.breaks = 6)+
-    geom_scatterpie(aes(x=lon,y=lat,r=All*0.01),data=articles,cols=c("Review", "Article"),alpha=.9)+
-    geom_scatterpie_legend(articles$All*0.01,x=-50, y=20,n=3, labeller=function(x) x/40)+
-    scale_fill_jco(name="Type")
-
-
-
-
-
-
-		   
-	
 		
 pdf('result02.pdf',width = 10,height = 8)
 p1
