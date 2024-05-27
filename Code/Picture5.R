@@ -55,7 +55,7 @@ LLM_Stopwords <- c("accordingly", "addition", "adventurous", "after", "all", "al
 ## Define and eliminate all custom stopwords
 myStopwords <- c(stopwords("english"),
  "people", "time", "day", "years", "just", "really", "one", "can", "like", "go", "get", "gt",
- "amp", "now", "one","two","h", "p", "ci","per","der","und","r","kg","ii","get", "much", "many", "every", "lot", "even", "also")
+ "amp", "now", "one","two","h", "p", "ci","per","use","s", "n", "y","der","und","r","kg","ii","get", "much", "many", "every", "lot", "even", "also")
 token <- tokens_select(token, MESH_Stopwords, selection = "remove")
 token <- tokens_select(token, LLM_Stopwords, selection = "remove")
 token <- tokens_select(token, myStopwords, selection = "remove")
@@ -67,45 +67,29 @@ token <- tokens_select(token, myStopwords, selection = "remove", case_insensitiv
 token <- tokens_select(token, MESH_Stopwords, selection = "remove", case_insensitive = TRUE)
 token_DEstop <- tokens_select(token, LLM_Stopwords , selection = "remove", case_insensitive = TRUE)
 
-
 ## we then create the document-feature matrix. 
 ## We lower and stem the words (tolower and stem) and remove common stop words (remove=stopwords()). 
 ##Stopwords are words that appear in texts but do not give the text a substantial meaning (e.g., “the”, “a”, or “for”)
 mydfm <- dfm(token_DEstop, tolower = TRUE)
-##[1] 12067 51729
+##[1] 11920 51056
+
 
 topfeatures(mydfm,n=100)
-## sperm        patient       infertil            men          studi 
-# 26748          22545          15083          14416          13518 
-##  male          group         result       signific     testicular 
-# 12865          12735          10202          10037           9576 
+##   sperm        patient       infertil            men          studi 
+#         26161          22282          14820          14224          13322 
+##          male          group     testicular           cell         fertil 
+#         12703          12385           9577           9430           8756 
+##   azoospermia          semen          level         normal    spermatozoa 
+#          8572           8182           8086           7149           6850 
+##          gene           rate      treatment        analysi          motil 
+#          6769           6404           6214           6105           5946 
+
 mydfm_remove <- dfm_select(mydfm, pattern = stopwords("english"), selection = "remove", valuetype = "fixed")
-##[1] [1] 12067 61970
- head(textstat_frequency(mydfm_remove),n=20)
-##          feature frequency rank docfreq group
-#1           sperm     26748    1    6882   all
-#2         patient     22545    2    6916   all
-#3        infertil     15083    3    5875   all
-#4             men     14416    4    5049   all
-#5           studi     13518    5    7146   all
-#6            male     12865    6    6044   all
-#7           group     12735    7    3874   all
-#8          result     10202    8    6978   all
-#9        signific     10037    9    5190   all
-#10     testicular      9576   10    3647   all
-#11            use      9406   11    5392   all
-#12           cell      9031   12    3056   all
-#13    azoospermia      8957   13    5128   all
-#14         fertil      8934   14    4416   all
-#15          semen      8471   15    3550   all
-#16              p      8325   16    2985   all
-#17          level      8202   17    3500   all
-#18         normal      7159   18    4009   all
-#19    spermatozoa      7020   19    2641   all
-#20           gene      6798   20    2434   all			 
+##[1] 12067 51056
+		 
 ## Trim the text with dfm_trim, we filter words that appear less than 1% and more than 95%. 
 mydfm.trim <- dfm_trim(mydfm_remove,
-      min_docfreq = 0.01, # min 1.0%
+          # min_docfreq = 0.01, # min 1.0%
 	  max_docfreq = 0.99, #  max 99.0%
 	  docfreq_type = "prop" )
 
@@ -117,14 +101,14 @@ library("Rmpfr")
 library("ldatuning")
 #
 ldatuning.metrics <- FindTopicsNumber(mydfm.trim, 
-       topics = seq(from = 2, to = 15, by = 1), 
+       topics = seq(from = 2, to = 20, by = 1), 
 	   metrics = c("Griffiths2004", "CaoJuan2009", "Arun2010", "Deveaud2014"), 
 	   method = "Gibbs", 
 	   control = list(seed = 77), mc.cores = 2L, verbose = TRUE
 )
  FindTopicsNumber_plot(ldatuning.metrics)
 
-k <- 15
+k <- 16
 burnin <- 1000
 iter <- 1000
 keep <- 50
@@ -137,9 +121,9 @@ library("ggwordcloud")
 plotlist = list()
 for (n in 1:k) {
     topicToViz <- n
-	top30terms <- sort(tmResult$terms[topicToViz,], decreasing=TRUE)[1:30]
-	words <- names(top30terms)
-	probabilities <- sort(tmResult$terms[topicToViz,], decreasing=TRUE)[1:30]
+	top50terms <- sort(tmResult$terms[topicToViz,], decreasing=TRUE)[1:50]
+	words <- names(top50terms)
+	probabilities <- sort(tmResult$terms[topicToViz,], decreasing=TRUE)[1:50]
     # visualize the terms as wordcloud
     p_topic_n   <-  ggplot(data= data.frame(words, probabilities))+
       geom_text_wordcloud(aes(label=words,size=probabilities))+
